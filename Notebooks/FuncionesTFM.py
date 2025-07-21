@@ -263,65 +263,10 @@ def IMPRIMIR_PARAMETRIA(configuraciones):
 
 
 
-# #### Función IMPRIMIR_RESULTADO_FINAL
-# Esta función realiza la impresión en pantalla los 4 tableros resultado de la evaluación de la calidad de un conjunto de datos
-
-# In[8]:
-
-
-def IMPRIMIR_RESULTADO_FINAL(resultado):
-    IMPRIMIR_TITULO("RESULTADOS EVALUACIÓN DE LA CALIDAD")
-    print("-----------------------------------")
-    print("")
-    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR CAMPO Y DIMENSIÓN")
-    print("")
-    print(f"{' S   ':<2} {'Campo':<27} {'Dimension':<20} {'Calidad':<14} {'Umbral Min':<15} {'Umbral Acep':<14} {'Resultado':<70}")
-    print("-" * 170)
-    for r in resultado:
-        IMPRIMIR_RESULTADO(r["icono"], 
-                           r["campo"], 
-                           r["dimension"], 
-                           r["calidad"],  
-                           r["umbral_minimo"], 
-                           r["umbral_aceptable"],
-                           r["mensaje"])
-    print("")
-
-    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR DIMENSIÓN")
-    print("")
-    print(f"{'Dimension':<25} {'Calidad':>14}")
-    print("-" * 40)
-    promedios_dimension = PROMEDIO_CALIDAD_DIMENSIONES(resultado)
-    for dimension, promedios_dimension in promedios_dimension.items():
-        print(f"{dimension:<25} | {promedios_dimension:>10.2f}%")
-
-    print("")
-
-    IMPRIMIR_TITULO("MEDICION DE LA CALIDAD POR CAMPO")
-    print("")
-    print(f"{'Campo':<27} {'Calidad':>14}")
-    print("-" * 42)
-    promedios_campos = PROMEDIO_CALIDAD_CAMPOS(resultado)
-    for campo, promedio_campos in promedios_campos.items():
-        print(f"{campo[:25]:<27} | {promedio_campos:>10.2f}%")
-
-    print("")
-
-    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR SEMÁFORO")
-    print("")
-    print(f"{'Semáforo':<73} {'Resultado':>15}")
-    print("-" * 96)
-    total = len(resultado)
-    cantidad_icono = PROMEDIO_CALIDAD_RESULTADO(resultado)
-    for mensaje, cantidad_icono in cantidad_icono.items():
-        porcentaje = 100 * cantidad_icono / total
-        print(f"{mensaje:<73} | {cantidad_icono:>3} / {total:<3} - {porcentaje:>5.2f}%")
-
-
 # #### función LEER_CSV
 # Función que permite leer un archivo en formato CSV
 
-# In[9]:
+# In[8]:
 
 
 def LEER_CSV(filepath, separador):
@@ -342,7 +287,7 @@ def LEER_CSV(filepath, separador):
 # #### Función SELECCIONA_CONJUNTO DE DATOS
 # Permite seleccionar de la ruta actual un conjunto de datos en formato csv con el fin de poder realizar la parametría y posterior evaluación de la calidad
 
-# In[10]:
+# In[9]:
 
 
 def SELECCIONA_CONJUNTO_DATOS():
@@ -414,7 +359,7 @@ def SELECCIONA_CONJUNTO_DATOS():
 # #### Funión CARGA_DATASET
 # Esta función realiza la carga del conjunto de datos el cual se va a parametrizar, una vez realizada la carga evalúa si existe una configuración previa y la muestra en pantalla, consulta si desea reemplazar el archivo existente o si desea añadir nuevos registros
 
-# In[11]:
+# In[10]:
 
 
 def CARGA_DATASET(nombre_archivo):
@@ -463,7 +408,7 @@ def CARGA_DATASET(nombre_archivo):
 # #### Función REGISTRA_PARAMETRIA
 # Esta función permite registrar toda la parametría necesaria para la validación de la calidad
 
-# In[44]:
+# In[11]:
 
 
 def REGISTRA_PARAMETRIA(nombre_archivo, encabezados, configuraciones, respuesta):
@@ -548,7 +493,7 @@ def REGISTRA_PARAMETRIA(nombre_archivo, encabezados, configuraciones, respuesta)
 # #### función GRABA_CONFIGURACIÓN
 # Función que permite grabar la configuración final ya registrada
 
-# In[45]:
+# In[12]:
 
 
 def GRABA_CONFIGURACION(nombre_archivo, configuraciones):
@@ -582,7 +527,7 @@ def GRABA_CONFIGURACION(nombre_archivo, configuraciones):
 # >- :999999 (Valores menores o iguales a 999999)
 # >- 0: (Valores mayores o iguales a 0) 
 
-# In[14]:
+# In[13]:
 
 
 def EXACTITUD(df, campo, validador, umbral_minimo, umbral_aceptable):
@@ -657,7 +602,7 @@ def EXACTITUD(df, campo, validador, umbral_minimo, umbral_aceptable):
 # #### Función Unicidad
 # Esta función mide la dimensión Unicidad referenciada en las normas ISO 8000 (s.f.) y la norma ISO/IEC 25012 (2008), también es mencionada dentro de las normas DAMA DMBok para el gobierno del dato bajo el nombre de No Duplicidad, la función medirá el grado en el que los registros son únicos en el conjunto de datos, y estableciendo si la calidad medida se encuentra por debajo del umbral mínimo, se encuentra dentro del umbral aceptable o está por encima de este.
 
-# In[15]:
+# In[14]:
 
 
 def UNICIDAD(df, campo, validador, umbral_minimo, umbral_aceptable):
@@ -696,7 +641,7 @@ def UNICIDAD(df, campo, validador, umbral_minimo, umbral_aceptable):
 # #### Función Credibilidad
 # La credibilidad está enmarcada dentro de las características o dimensiones inherentes al dato según la norma ISO/IEC 25012, esta función permite permite medir que tan confiables son los valores del conjunto de datos con respecto a una lista de datos permitidos, para ello la función evalúa cada uno de los datos y los compara con una lista o validador establecido en la configuración de la calidad, sobre esto establece el porcentaje de calidad del dato y lo compara con los umbrales mínimos y máximos establecidos para el dato y la dimensión, estos valores y su validador enmarcados dentro de lo que se refiere a la configuración del dato dentro de su uso y contexto.
 
-# In[16]:
+# In[15]:
 
 
 def CREDIBILIDAD(df, campo, validador, umbral_minimo, umbral_aceptable):
@@ -767,7 +712,7 @@ def CREDIBILIDAD(df, campo, validador, umbral_minimo, umbral_aceptable):
 # #### Función Consistencia
 # La consistencia está presente en la norma ISO/IEC 25012 y en la norma ISO 8000 y mide el grado en que los datos están libres de contradicción y con coherentes dentro de un contexto y uso definido, la presente función comprueba que los datos cumplan un patron definido según lo especificado en la configuración, calcula cuantitativamente el porcentaje de calidad según el resultado de la evaluación y lo compara con los umbrales mínimo y máximo establecidos para el dato y la dimensión.
 
-# In[17]:
+# In[16]:
 
 
 def CONSISTENCIA(df, campos, validador, umbral_minimo, umbral_aceptable):
@@ -805,7 +750,7 @@ def CONSISTENCIA(df, campos, validador, umbral_minimo, umbral_aceptable):
 # #### Función Completitud
 # La completitud es una dimensión de la calidad considerada inherente al dato, se encuentra enmarcada en la norma ISO/IEC 25012 y en la norma ISO 8000, también es mencionada como una característica del dato y como parte de la evaluación propia del gobierno de datos en las normas DAMA - DMBok, esta dimensión o característica mide el grado en que los valores asociados a un atributo presentan valores. La función evalúa el dato configurado y establece un valor cuantitativo según la presencia de los valores en el conjunto de datos, comparándolo posteriormente con los umbrales mínimo y aceptable configurados para el campo y dimensión.
 
-# In[18]:
+# In[17]:
 
 
 def COMPLETITUD(df, campo, validador, umbral_minimo, umbral_aceptable):
@@ -846,7 +791,7 @@ def COMPLETITUD(df, campo, validador, umbral_minimo, umbral_aceptable):
 # #### Calcula el promedio de la calidad por dimensión
 # Esta función toma todas las dimensiones de calidad evaluadas en el conjunto de datos y calcula el promedio obtenido en la evaluación por cada una de estas, con esto se pretende dar un valor cuantitativo de la calidad por cada una de las dimensiones evaluadas a nivel de conjunto de datos y no del campo propiamente dicho
 
-# In[19]:
+# In[18]:
 
 
 def PROMEDIO_CALIDAD_DIMENSIONES(resultado):
@@ -870,7 +815,7 @@ def PROMEDIO_CALIDAD_DIMENSIONES(resultado):
 # #### Calcula el promedio de la calidad por campo
 # Esta función toma todas los campos del dataset evaluado y calcula el promedio obtenido en la evaluación por cada uno de estos, con esto se pretende dar un valor cuantitativo de la calidad por cada uno de los campos evaluadas.
 
-# In[20]:
+# In[19]:
 
 
 def PROMEDIO_CALIDAD_CAMPOS(resultado, decimales=2):
@@ -892,7 +837,7 @@ def PROMEDIO_CALIDAD_CAMPOS(resultado, decimales=2):
 # #### Calcula el promedio de la calidad por semáfono
 # Esta función toma todas las opciones de semaforización del dataset evaluado y calcula el promedio obtenido en la evaluación por cada uno de estos, con esto se pretende dar un valor cuantitativo de la calidad por cada uno de los posibles valores.
 
-# In[21]:
+# In[20]:
 
 
 def PROMEDIO_CALIDAD_RESULTADO(resultado, decimales=2):
@@ -916,7 +861,7 @@ def PROMEDIO_CALIDAD_RESULTADO(resultado, decimales=2):
 # #### Función CARGA_PARAMETRIA
 # Esta función es el punto de partida del evaluador, carga la parametría registrada en el paso 1 para en base a esta iniciar la evaluación del conjunto de datos
 
-# In[22]:
+# In[21]:
 
 
 def CARGA_PARAMETRIA():
@@ -947,7 +892,7 @@ def CARGA_PARAMETRIA():
 # #### función EVALUADOR
 # Función principal para la evaluación de la calidad.
 
-# In[23]:
+# In[22]:
 
 
 funciones_dimensiones = {
@@ -987,24 +932,96 @@ def EVALUADOR(configuraciones, df_data):
 
 # ## SECCIÓN FASE 3 DE LA METODOLOGÍA - MUESTRA DE RESULTADOS DE LA EVALUACIÓN (SALIDA)
 
+# #### Función IMPRIMIR_RESULTADO_FINAL
+# Esta función realiza la impresión en pantalla los 4 tableros resultado de la evaluación de la calidad de un conjunto de datos
+
+# In[23]:
+
+
+def IMPRIMIR_RESULTADO_FINAL(resultado):
+    IMPRIMIR_TITULO("RESULTADOS EVALUACIÓN DE LA CALIDAD")
+    print("-----------------------------------")
+    print("")
+    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR CAMPO Y DIMENSIÓN")
+    print("")
+    print(f"{' S   ':<2} {'Campo':<27} {'Dimension':<20} {'Calidad':<14} {'Umbral Min':<15} {'Umbral Acep':<14} {'Resultado':<70}")
+    print("-" * 170)
+    for r in resultado:
+        IMPRIMIR_RESULTADO(r["icono"], 
+                           r["campo"], 
+                           r["dimension"], 
+                           r["calidad"],  
+                           r["umbral_minimo"], 
+                           r["umbral_aceptable"],
+                           r["mensaje"])
+    print("")
+
+    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR DIMENSIÓN")
+    print("")
+    print(f"{'Dimension':<25} {'Calidad':>14}")
+    print("-" * 40)
+    promedios_dimension = PROMEDIO_CALIDAD_DIMENSIONES(resultado)
+    for dimension, promedios_dimension in promedios_dimension.items():
+        print(f"{dimension:<25} | {promedios_dimension:>10.2f}%")
+
+    print("")
+
+    IMPRIMIR_TITULO("MEDICION DE LA CALIDAD POR CAMPO")
+    print("")
+    print(f"{'Campo':<27} {'Calidad':>14}")
+    print("-" * 42)
+    promedios_campos = PROMEDIO_CALIDAD_CAMPOS(resultado)
+    for campo, promedio_campos in promedios_campos.items():
+        print(f"{campo[:25]:<27} | {promedio_campos:>10.2f}%")
+
+    print("")
+
+    IMPRIMIR_TITULO("MEDICIÓN DE LA CALIDAD POR SEMÁFORO")
+    print("")
+    print(f"{'Semáforo':<73} {'Resultado':>15}")
+    print("-" * 96)
+    total = len(resultado)
+    cantidad_icono = PROMEDIO_CALIDAD_RESULTADO(resultado)
+    for mensaje, cantidad_icono in cantidad_icono.items():
+        porcentaje = 100 * cantidad_icono / total
+        print(f"{mensaje:<73} | {cantidad_icono:>3} / {total:<3} - {porcentaje:>5.2f}%")
+
+
 # #### Función MAPA_CALOR
 # Esta función dibuja en pantalla un mapa de calor con los resultados obtenidos en la evaluación de la calidad
 
-# In[24]:
+# In[6]:
 
 
 def MAPA_CALOR(resultado):
     df_resultado = pd.DataFrame(resultado)
-    df_resultado["campo"] = df_resultado["campo"].apply(lambda x: ", ".join(x) if isinstance(x, list) else str(x))
 
+    # Convertir listas a texto plano
+    df_resultado["campo"] = df_resultado["campo"].apply(
+        lambda x: ", ".join(x) if isinstance(x, list) else str(x)
+    )
+
+    # Dividir etiquetas largas en 2 líneas
+    def dividir_linea(texto, max_len=20):
+        if len(texto) > max_len:
+            corte = texto[:max_len].rfind(" ")
+            if corte == -1:
+                corte = max_len
+            return texto[:corte] + '\n' + texto[corte:]
+        return texto
+
+    # Aplicar a una nueva columna (para preservar campo original si se desea)
+    df_resultado["campo_etiqueta"] = df_resultado["campo"].apply(dividir_linea)
+
+    # Usar campo dividido como índice en el heatmap
     heatmap_data = df_resultado.pivot_table(
-        index="campo",
+        index="campo_etiqueta",
         columns="dimension",
         values="calidad",
         aggfunc="mean"
     )
 
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=(10, 6))
     sns.heatmap(
         heatmap_data,
         annot=True,
@@ -1013,15 +1030,15 @@ def MAPA_CALOR(resultado):
         linewidths=0.5,
         cbar=True,
         square=False,
-        annot_kws={"fontsize":9},
-        vmin=0,   
-        vmax=100 
+        annot_kws={"fontsize": 9},
+        vmin=0,
+        vmax=100
     )
 
     plt.title("Mapa de Calor - Calidad por Campo y Dimensión", fontsize=14, weight="bold")
     plt.xlabel("Dimensión", fontsize=10)
     plt.ylabel("Campo", fontsize=10)
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=0)
     plt.yticks(rotation=0)
     plt.tight_layout()
     plt.show()
@@ -1030,29 +1047,45 @@ def MAPA_CALOR(resultado):
 # #### Función DIAGRAMA_BURBUJAS
 # Función que dibuja en pantalla un diagrama de burbujas con el resultado de la evaluación
 
-# In[25]:
+# In[5]:
 
 
 def DIAGRAMA_BURBUJAS(resultado):
     df_resultado = pd.DataFrame(resultado)
-    df_resultado['campo_str'] = df_resultado['campo'].apply(lambda x: ", ".join(x) if isinstance(x, list) else str(x))
 
+    # Convertir listas a texto
+    df_resultado['campo_str'] = df_resultado['campo'].apply(
+        lambda x: ", ".join(x) if isinstance(x, list) else str(x)
+    )
+
+    # Función para dividir etiquetas largas en 2 líneas
+    def dividir_linea(texto, max_len=20):
+        if len(texto) > max_len:
+            corte = texto[:max_len].rfind(" ")
+            if corte == -1:
+                corte = max_len
+            return texto[:corte] + '\n' + texto[corte:]
+        return texto
+
+    df_resultado['campo_str'] = df_resultado['campo_str'].apply(dividir_linea)
+
+    # Crear gráfico de burbujas
     plt.figure(figsize=(8, 4))
     sns.scatterplot(
-    data=df_resultado,
-    x="dimension",
-    y="campo_str",
-    size="calidad",
-    hue="calidad",
-    palette="viridis",
-    sizes=(50, 500),
-    legend="brief"
+        data=df_resultado,
+        x="dimension",
+        y="campo_str",
+        size="calidad",
+        hue="calidad",
+        palette="viridis",
+        sizes=(50, 500),
+        legend="brief"
     )
 
     plt.title("Gráfico de Burbujas - Calidad por Campo y Dimensión", fontsize=14, weight="bold")
     plt.xlabel("Dimensión", fontsize=10)
     plt.ylabel("Campo", fontsize=10)
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=0)
     plt.tight_layout()
     plt.show()
 
@@ -1086,7 +1119,7 @@ def DIAGRAMA_RADAR(resultado):
 # #### Función DIAGRAMA_BARRAS_DIMENSION
 # Función que dibuja en pantalla un diagrama de barras por las dimensiones evaluadas según el promedio simple de cada una de llas
 
-# In[27]:
+# In[1]:
 
 
 def DIAGRAMA_BARRAS_DIMENSION(resultado):
@@ -1115,7 +1148,7 @@ def DIAGRAMA_BARRAS_DIMENSION(resultado):
     ax.set_ylabel("Calidad promedio (%)", fontsize=12)
     ax.set_xlabel("Dimensión", fontsize=12)
     ax.set_ylim(0, 100)
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=0)
     plt.tight_layout()
     plt.show()
 
@@ -1185,39 +1218,58 @@ def DIAGRAMA_PIE(resultado):
 # #### Funión DIAGRAMA_BARRA_CAMPOS
 # Función que realiza un diagrama de barras según el promedio de calidad obtenido por cada uno de los campos evaluados
 
-# In[30]:
+# In[4]:
 
 
 def DIAGRAMA_BARRA_CAMPOS(resultado):
     df_resultado = pd.DataFrame(resultado)
 
-    df_resultado["campo"] = df_resultado["campo"].apply(lambda x: ", ".join(x) if isinstance(x, list) else str(x))
+    # Unir listas de campos en una sola cadena
+    df_resultado["campo"] = df_resultado["campo"].apply(
+        lambda x: ", ".join(x) if isinstance(x, list) else str(x)
+    )
 
+    # Dividir etiquetas largas en dos líneas si superan 20 caracteres
+    def dividir_linea(texto, max_len=20):
+        if len(texto) > max_len:
+            corte = texto[:max_len].rfind(" ")
+            if corte == -1:
+                corte = max_len
+            return texto[:corte] + '\n' + texto[corte:]
+        return texto
+
+    df_resultado["campo"] = df_resultado["campo"].apply(dividir_linea)
+
+    # Calcular promedios
     promedios = df_resultado.groupby("campo")["calidad"].mean().reset_index()
-    #promedios = promedios.sort_values(by="calidad", ascending=True)
+
+    # Colores (todos iguales)
+    azul_unico = ["#1f77b4"] * len(promedios)
 
     plt.figure(figsize=(10, 6))
     barras = sns.barplot(
         data=promedios, 
-        x="campo", 
-        y="calidad", 
-        hue="campo", 
-        palette="viridis", 
-        legend=False 
+        y="campo", 
+        x="calidad", 
+        hue="campo",           # ← Necesario para usar palette sin warning
+        palette=azul_unico,
+        legend=False
     )
 
+    # Añadir etiquetas de porcentaje
     for i, row in promedios.iterrows():
         barras.text(
-            i, row.calidad + 1, f"{row.calidad:.2f}%",
-            color='black', ha='center', fontsize=9
+            row.calidad + 1,   # x: ligeramente a la derecha del final de la barra
+            i,                 # y: posición de la barra
+            f"{row.calidad:.2f}%", 
+            color='black', va='center', fontsize=9
         )
 
     plt.title("Promedio de Calidad por Campo", fontsize=14, weight="bold")
-    plt.xlabel("Campo", fontsize=10)
-    plt.ylabel("Calidad (%)", fontsize=10)
-    plt.ylim(0, 110)
-    plt.xticks(rotation=45, ha='right')
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.xlabel("Calidad (%)", fontsize=10)
+    plt.ylabel("Campo", fontsize=10)
+    plt.xlim(0, 110)
+    plt.grid(axis='x', linestyle='--', alpha=0.7)
     plt.tight_layout()
     plt.show()
 
